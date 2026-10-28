@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  omniresidual-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: omniresidual_studio
+    ports:
+      - "8501:8501"
+    environment:
+      - TELEMETRY_FREQ_HZ=50
+      - SYSID_PARALLEL_ENVS=16
+      - SYSID_MAX_ITERATIONS=25
+      - ANOMALY_THRESHOLD_NM=3.5
+      - NEBIUS_API_KEY=${NEBIUS_API_KEY:-}
+      - NEBIUS_BASE_URL=${NEBIUS_BASE_URL:-https://api.tokenfactory.nebius.com/v1}
+      - NEBIUS_MODEL=${NEBIUS_MODEL:-nvidia/nemotron-3-nano}
+    restart: unless-stopped
+    volumes:
+      - .:/app
