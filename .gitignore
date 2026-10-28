@@ -4,8 +4,7 @@
 .env
 .env*.local
 *.env
-# Keep the template file tracked
-!.env.example
+.env.example
 
 # ==========================================
 # Python Bytecode & Packaging Artifacts
