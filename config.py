@@ -1,10 +1,9 @@
 """
 OmniResidual Configuration Module
-Centralizes mechanical specifications, control gains, and serverless LLM configs.
+Configured for NVIDIA NIM (Cloud or On-Premise Self-Hosted Container).
 """
 import os
 from dataclasses import dataclass, field
-from typing import List
 import numpy as np
 
 @dataclass
@@ -32,9 +31,14 @@ class SystemConfig:
     dt: float = 1.0 / freq_hz
     residual_threshold_nm: float = float(os.getenv("ANOMALY_THRESHOLD_NM", "3.5"))
     window_size: int = 50
-    nebius_api_key: str = os.getenv("NEBIUS_API_KEY", "")
-    nebius_base_url: str = os.getenv("NEBIUS_BASE_URL", "https://api.tokenfactory.nebius.com/v1")
-    nebius_model: str = os.getenv("NEBIUS_MODEL", "nvidia/nemotron-3-nano")
+
+    # NVIDIA NIM Microservice Configuration
+    # For Cloud NIM: https://integrate.api.nvidia.com/v1
+    # For Local Container NIM: http://localhost:8000/v1
+    nvidia_api_key: str = os.getenv("NVIDIA_API_KEY", os.getenv("NVIDIA_NIM_API_KEY", ""))
+    nvidia_nim_base_url: str = os.getenv("NVIDIA_NIM_BASE_URL", "https://integrate.api.nvidia.com/v1")
+    nvidia_nim_model: str = os.getenv("NVIDIA_NIM_MODEL", "nvidia/llama-3.1-nemotron-70b-instruct")
+
     parallel_envs: int = int(os.getenv("SYSID_PARALLEL_ENVS", "16"))
     max_sysid_iterations: int = int(os.getenv("SYSID_MAX_ITERATIONS", "25"))
     kinematics: PandaKinematicsConfig = field(default_factory=PandaKinematicsConfig)

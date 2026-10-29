@@ -13,9 +13,14 @@ services:
       - SYSID_PARALLEL_ENVS=16
       - SYSID_MAX_ITERATIONS=25
       - ANOMALY_THRESHOLD_NM=3.5
-      - NEBIUS_API_KEY=${NEBIUS_API_KEY:-}
-      - NEBIUS_BASE_URL=${NEBIUS_BASE_URL:-https://api.tokenfactory.nebius.com/v1}
-      - NEBIUS_MODEL=${NEBIUS_MODEL:-nvidia/nemotron-3-nano}
+      
+      # NVIDIA NIM Settings
+      # For NVIDIA Hosted Cloud NIM:
+      - NVIDIA_API_KEY=${NVIDIA_API_KEY:-}
+      - NVIDIA_NIM_BASE_URL=https://integrate.api.nvidia.com/v1
+      - NVIDIA_NIM_MODEL=nvidia/llama-3.1-nemotron-70b-instruct
+
+      # If using a self-hosted on-prem NIM container on your local GPU:
+      # - NVIDIA_NIM_BASE_URL=http://host.docker.internal:8000/v1
+      # - NVIDIA_NIM_MODEL=meta/llama-3.1-70b-instruct
     restart: unless-stopped
-    volumes:
-      - .:/app
