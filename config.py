@@ -1,6 +1,6 @@
 """
 OmniResidual Configuration Module
-Configured for NVIDIA NIM (Cloud or On-Premise Self-Hosted Container).
+Centralizes mechanical specifications, control gains, and NVIDIA NIM / Microservice configs.
 """
 import os
 from dataclasses import dataclass, field
@@ -33,11 +33,16 @@ class SystemConfig:
     window_size: int = 50
 
     # NVIDIA NIM Microservice Configuration
-    # For Cloud NIM: https://integrate.api.nvidia.com/v1
-    # For Local Container NIM: http://localhost:8000/v1
-    nvidia_api_key: str = os.getenv("NVIDIA_API_KEY", os.getenv("NVIDIA_NIM_API_KEY", ""))
+    # Cloud NIM: https://integrate.api.nvidia.com/v1
+    # Local container: http://localhost:8000/v1
+    nvidia_api_key: str = os.getenv("NVIDIA_API_KEY", os.getenv("NVIDIA_NIM_API_KEY", os.getenv("NEBIUS_API_KEY", "")))
     nvidia_nim_base_url: str = os.getenv("NVIDIA_NIM_BASE_URL", "https://integrate.api.nvidia.com/v1")
     nvidia_nim_model: str = os.getenv("NVIDIA_NIM_MODEL", "nvidia/llama-3.1-nemotron-70b-instruct")
+
+    # Backward compatibility aliases for existing Nebius calls & tests
+    nebius_api_key: str = os.getenv("NEBIUS_API_KEY", os.getenv("NVIDIA_API_KEY", os.getenv("NVIDIA_NIM_API_KEY", "")))
+    nebius_base_url: str = os.getenv("NEBIUS_BASE_URL", "https://integrate.api.nvidia.com/v1")
+    nebius_model: str = os.getenv("NEBIUS_MODEL", "nvidia/llama-3.1-nemotron-70b-instruct")
 
     parallel_envs: int = int(os.getenv("SYSID_PARALLEL_ENVS", "16"))
     max_sysid_iterations: int = int(os.getenv("SYSID_MAX_ITERATIONS", "25"))
