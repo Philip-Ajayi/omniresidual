@@ -2,8 +2,9 @@
 Analytical Residual Engine: Evaluates nominal dynamics in real-time,
 computes instantaneous torque residuals Delta tau, and extracts diagnostic signatures.
 """
+from __future__ import annotations
 import numpy as np
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Tuple
 from config import CONFIG
 from core.dynamics import FrankaDynamicsEngine
 
